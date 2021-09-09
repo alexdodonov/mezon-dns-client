@@ -1,6 +1,15 @@
 <?php
+namespace Mezon\DnsClient\Tests;
 
-class DnsClientUnitTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+use Mezon\DnsClient\DnsClient;
+
+/**
+ *
+ * @author gdever
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
+class DnsClientUnitTest extends TestCase
 {
 
     /**
@@ -8,9 +17,9 @@ class DnsClientUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        \Mezon\DnsClient\DnsClient::clear();
-        \Mezon\DnsClient\DnsClient::setService('auth', 'auth.local');
-        \Mezon\DnsClient\DnsClient::setService('author', 'author.local');
+        DnsClient::clear();
+        DnsClient::setService('auth', 'auth.local');
+        DnsClient::setService('author', 'author.local');
     }
 
     /**
@@ -19,7 +28,7 @@ class DnsClientUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetServices(): void
     {
         // setup and test body
-        $services = \Mezon\DnsClient\DnsClient::getServices();
+        $services = DnsClient::getServices();
 
         // assertions
         $this->assertEquals('auth, author', $services);
@@ -30,7 +39,7 @@ class DnsClientUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testServiceExists(): void
     {
-        $this->assertTrue(\Mezon\DnsClient\DnsClient::serviceExists('auth'), 'Existing service was not found');
+        $this->assertTrue(DnsClient::serviceExists('auth'), 'Existing service was not found');
 
         $this->assertFalse(\Mezon\DnsClient\DnsClient::serviceExists('unexisting'), 'Unexisting service was found');
     }
@@ -44,7 +53,7 @@ class DnsClientUnitTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         // test body and assertions
-        \Mezon\DnsClient\DnsClient::resolveHost('unexisting');
+        DnsClient::resolveHost('unexisting');
     }
 
     /**
@@ -53,7 +62,7 @@ class DnsClientUnitTest extends \PHPUnit\Framework\TestCase
     public function testResolveHost(): void
     {
         // test body and assertions
-        $uRL = \Mezon\DnsClient\DnsClient::resolveHost('auth');
+        $uRL = DnsClient::resolveHost('auth');
         $this->assertEquals('auth.local', $uRL, 'Invalid URL was fetched');
     }
 
@@ -63,9 +72,9 @@ class DnsClientUnitTest extends \PHPUnit\Framework\TestCase
     public function testSetService(): void
     {
         // setup and test body
-        \Mezon\DnsClient\DnsClient::setService('service-name', 'http://example.com');
+        DnsClient::setService('service-name', 'http://example.com');
 
         // assertions
-        $this->assertTrue(\Mezon\DnsClient\DnsClient::serviceExists('service-name'));
+        $this->assertTrue(DnsClient::serviceExists('service-name'));
     }
 }

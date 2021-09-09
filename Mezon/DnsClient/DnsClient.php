@@ -21,8 +21,10 @@ class DnsClient
 
     /**
      * DNS records
+     *
+     * @var array
      */
-    public static $dNSRecords = [];
+    public static $dnsRecords = [];
 
     /**
      * Method returns list of available services
@@ -31,7 +33,7 @@ class DnsClient
      */
     public static function getServices(): string
     {
-        return implode(', ', array_keys(self::$dNSRecords));
+        return implode(', ', array_keys(self::$dnsRecords));
     }
 
     /**
@@ -43,7 +45,7 @@ class DnsClient
      */
     public static function serviceExists(string $serviceName): bool
     {
-        return isset(self::$dNSRecords[$serviceName]);
+        return isset(self::$dnsRecords[$serviceName]);
     }
 
     /**
@@ -55,16 +57,16 @@ class DnsClient
      */
     public static function resolveHost(string $serviceName): string
     {
-        if (! isset(self::$dNSRecords[$serviceName])) {
+        if (! isset(self::$dnsRecords[$serviceName])) {
             throw (new \Exception(
                 'Service "' . $serviceName . '" was not found among services: ' . self::getServices(),
                 - 1));
         }
 
-        if (is_string(self::$dNSRecords[$serviceName])) {
-            return self::$dNSRecords[$serviceName];
+        if (is_string(self::$dnsRecords[$serviceName])) {
+            return self::$dnsRecords[$serviceName];
         } else {
-            throw (new \Exception('Invalid URL "' . serialize(self::$dNSRecords[$serviceName]) . '"', - 1));
+            throw (new \Exception('Invalid URL "' . serialize(self::$dnsRecords[$serviceName]) . '"', - 1));
         }
     }
 
@@ -78,7 +80,7 @@ class DnsClient
      */
     public static function setService(string $serviceName, string $serviceUrl): void
     {
-        self::$dNSRecords[$serviceName] = $serviceUrl;
+        self::$dnsRecords[$serviceName] = $serviceUrl;
     }
 
     /**
@@ -86,6 +88,6 @@ class DnsClient
      */
     public static function clear(): void
     {
-        self::$dNSRecords = [];
+        self::$dnsRecords = [];
     }
 }
