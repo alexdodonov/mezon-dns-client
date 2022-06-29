@@ -24,7 +24,7 @@ class DnsClient
      *
      * @var array
      */
-    public static $dnsRecords = [];
+    private static $dnsRecords = [];
 
     /**
      * Method returns list of available services
@@ -63,11 +63,7 @@ class DnsClient
                 - 1));
         }
 
-        if (is_string(self::$dnsRecords[$serviceName])) {
-            return self::$dnsRecords[$serviceName];
-        } else {
-            throw (new \Exception('Invalid URL "' . serialize(self::$dnsRecords[$serviceName]) . '"', - 1));
-        }
+        return self::$dnsRecords[$serviceName];
     }
 
     /**

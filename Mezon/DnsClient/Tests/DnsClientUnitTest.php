@@ -39,6 +39,7 @@ class DnsClientUnitTest extends TestCase
      */
     public function testServiceExists(): void
     {
+        // test body and assertions
         $this->assertTrue(DnsClient::serviceExists('auth'), 'Existing service was not found');
 
         $this->assertFalse(\Mezon\DnsClient\DnsClient::serviceExists('unexisting'), 'Unexisting service was found');
@@ -49,10 +50,12 @@ class DnsClientUnitTest extends TestCase
      */
     public function testResolveUnexistingHost(): void
     {
-        // setup
+        // assertions
+        $this->expectExceptionMessage('Service "unexisting" was not found among services: auth, author');
+        $this->expectExceptionCode(-1);
         $this->expectException(\Exception::class);
 
-        // test body and assertions
+        // test body
         DnsClient::resolveHost('unexisting');
     }
 
@@ -61,7 +64,7 @@ class DnsClientUnitTest extends TestCase
      */
     public function testResolveHost(): void
     {
-        // test body and assertions
+        // setup, test body and assertions
         $uRL = DnsClient::resolveHost('auth');
         $this->assertEquals('auth.local', $uRL, 'Invalid URL was fetched');
     }
